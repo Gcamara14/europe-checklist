@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gio's Europe Packing Checklist</title>
+<style>
+:root{--bg:#f7f1e8;--card:#fffaf2;--ink:#17202a;--muted:#667085;--line:#e7dccb;--green:#256f5b;--gold:#c89b3c;--blue:#1f3a5f;--done:#e8f5ee}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:1100px;margin:0 auto;padding:0 14px}header{position:sticky;top:0;z-index:10;background:rgba(247,241,232,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 0 12px}h1{font-size:25px;margin:0 0 6px}.subtitle{margin:0 0 12px;color:var(--muted);font-size:14px}.meter{height:16px;background:#eadfce;border-radius:999px;overflow:hidden;border:1px solid var(--line)}#bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .2s}.stats{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;margin-top:7px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 12px;font-weight:700;white-space:nowrap;cursor:pointer;color:#334155}.tab.active{background:var(--green);border-color:var(--green);color:#fff}main{padding:12px 0 40px}.panel{display:none}.panel.active{display:block}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}.btn{border:1px solid var(--line);background:white;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer}.danger{color:#be123c}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.05)}h2{font-size:18px;margin:0 0 8px}.hint{font-size:13px;color:var(--muted);margin:0 0 10px;line-height:1.35}.row{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:11px;cursor:pointer;line-height:1.25}.row:hover{background:#f3eadb}.row.done{background:var(--done);color:#5d6f62;text-decoration:line-through}input[type=checkbox]{width:20px;height:20px;accent-color:var(--green);flex:none}.badge{display:inline-block;font-size:12px;color:#475569;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:2px 4px 0 0}.mini{font-size:12px;color:var(--muted);margin-left:30px;margin-top:-5px;margin-bottom:4px}.outfit{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0}@media print{header,.tabs,.actions{display:none}.panel{display:block}.card{break-inside:avoid;box-shadow:none}body{background:white}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Europe Packing Checklist</h1><p class="subtitle">Backpack vs suitcase, outfit rotation, Paris laundry plan, and progress saved on this device.</p><div class="meter"><div id="bar"></div></div><div class="stats"><span id="packedCount">0 of 0 packed</span><span id="packedPercent">0% complete</span></div><nav class="tabs" id="tabs" aria-label="Packing sections"></nav></div></header>
+<main class="wrap" id="app"></main>
+<script>
+(function(){
+  'use strict';
+  const STORAGE_KEY = 'gio_europe_packing_checklist_fixed_v2';
+  const checklist = {
+    'Backpack': [
+      {title:'Documents & money', hint:'Keep these with you, never checked.', items:['Passport','Driver license','Wallet','Chase Sapphire Reserve','Debit card','Small euro cash','Small pound cash','Printed hotel / flight backup','Passport copy','Emergency contacts']},
+      {title:'Electronics', hint:'Daily-use tech and chargers.', items:['iPhone','AirPods','Apple Watch','Apple Watch charger','USB-C cables x2','25K Anker power bank','Universal travel adapter','Portable charger cable','DJI Pocket 3 / camera if bringing','Camera charger / memory card']},
+      {title:'Medicine & health', hint:'Keep important meds in the backpack.', items:['Albuterol inhaler','Alvesco inhaler','Allergy medicine','Advil / Tylenol','Tums or Pepcid','Melatonin','Band-Aids','Blister patches / Compeed','Any prescriptions']},
+      {title:'Plane comfort', hint:'For the long flight and trains.', items:['Eye mask','Neck pillow if bringing','Gum','Empty water bottle','Light hoodie or layer','One backup outfit','Snack','Hand sanitizer','Chapstick']}
+    ],
+    'Suitcase': [
+      {title:'Button-ups / dinner shirts', hint:'Iron these first, then touch up at hotels.', items:['White dress shirt','Light blue dress shirt','White linen button-up','Olive green linen shirt','Navy linen shirt','Pink / lavender linen shirt','Blue striped linen shirt','Patterned camp-collar shirt']},
+      {title:'Casual tops', hint:'Easy rotation for sightseeing.', items:['Yellow knit polo','White T-shirt x2','Black T-shirt x2','Light gray T-shirt','Optional extra casual tee']},
+      {title:'Bottoms', hint:'Your main capsule wardrobe pieces.', items:['White pants','Navy trousers','Khaki / tan chinos','White shorts','Sage linen shorts','Navy shorts','Blue swim shorts']},
+      {title:'Shoes & accessories', hint:'White sneakers for most days, brown shoes for dinner.', items:['White BOSS sneakers','Brown loafers / brown dress shoes','Birkenstocks / slides','Brown belt','Woven / light belt','Sunglasses','Watch','Jewelry / chain']},
+      {title:'Underwear & sleep', hint:'Pack for 8–10 days, laundry in Paris.', items:['Underwear x9–10','No-show socks x6–8','Dress socks x2','Sleep shorts x2','Sleep shirts x2']},
+      {title:'Layers', hint:'For flights, trains, London, and cool evenings.', items:['Olive overshirt','Thin sweater or light layer']}
+    ],
+    'Toiletries': [
+      {title:'Daily toiletries', hint:'Use travel sizes when possible.', items:['Toothbrush','Toothpaste','Floss','Deodorant','Cologne','Face wash','Moisturizer','Sunscreen','Hair product']},
+      {title:'Grooming', hint:'Only bring what you will actually use.', items:['Razor','Shaving cream','Beard trimmer if needed','Nail clippers','Tweezers','Comb / brush']},
+      {title:'Laundry & wrinkles', hint:'Helpful because linen wrinkles.', items:['Laundry bag','Travel detergent sheets or pods','Wrinkle release spray','Lint roller','Stain remover pen']}
+    ],
+    'Outfits': [
+      {title:'Best photo / romantic looks', hint:'Use these for Rome, Tuscany, and nicer photos.', items:['Olive linen shirt + white pants + brown shoes','White shirt + navy trousers + brown shoes','White linen shirt + sage shorts + white sneakers']},
+      {title:'Dinner rotation', hint:'Tuck in with pants; leave untucked with shorts.', items:['White shirt + navy trousers + brown shoes','Light blue shirt + navy trousers + brown shoes','Navy linen shirt + white pants + white sneakers','Olive linen shirt + white pants + brown shoes']},
+      {title:'Daytime rotation', hint:'For 15k–25k step days.', items:['Yellow knit polo + white shorts + white sneakers','Patterned camp shirt + sage shorts + white sneakers','Blue striped shirt + white shorts + white sneakers','Pink / lavender linen shirt + navy shorts + white sneakers','Gray tee + khaki chinos + white sneakers']},
+      {title:'Bottom pairing guide', hint:'Quick rotation guide.', items:['White pants: olive, navy, light blue, yellow knit','Navy shorts: white, lavender, blue stripe, yellow knit','White shorts: olive, navy, blue stripe, yellow knit','Sage shorts: white linen, yellow knit, patterned camp shirt']}
+    ],
+    'Final Checks': [
+      {title:'Before leaving home', hint:'Do these the day before or morning of.', items:['Laundry done','Iron key shirts','Charge all devices','Download offline maps','Confirm hotel addresses','Check weather','Take out trash','Lock windows and doors','Put AirTag in suitcase']},
+      {title:'Paris laundry plan', hint:'Do one load around the middle of the trip.', items:['Wash underwear','Wash socks','Wash T-shirts','Wash casual shirts','Air dry linen if needed']}
+    ]
+  };
+
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch(e) { state = {}; }
+
+  const tabsEl = document.getElementById('tabs');
+  const appEl = document.getElementById('app');
+  const barEl = document.getElementById('bar');
+  const countEl = document.getElementById('packedCount');
+  const pctEl = document.getElementById('packedPercent');
+
+  function key(tab, group, item){ return encodeURIComponent(tab + '|' + group + '|' + item); }
+  function allKeys(tabFilter){
+    const keys = [];
+    Object.keys(checklist).forEach(tab => {
+      if (tabFilter && tab !== tabFilter) return;
+      checklist[tab].forEach(group => group.items.forEach(item => keys.push(key(tab, group.title, item))));
+    });
+    return keys;
+  }
+  function save(){ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {} updateProgress(); }
+  function updateProgress(){
+    const keys = allKeys();
+    const done = keys.filter(k => !!state[k]).length;
+    const pct = keys.length ? Math.round((done / keys.length) * 100) : 0;
+    barEl.style.width = pct + '%';
+    countEl.textContent = done + ' of ' + keys.length + ' packed';
+    pctEl.textContent = pct + '% complete';
+  }
+  function showTab(tab){
+    document.querySelectorAll('.tab').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+    document.querySelectorAll('.panel').forEach(panel => panel.classList.toggle('active', panel.dataset.tab === tab));
+    try { localStorage.setItem(STORAGE_KEY + '_activeTab', tab); } catch(e) {}
+  }
+  function setTab(tab, value){
+    allKeys(tab).forEach(k => state[k] = value);
+    save();
+    render();
+    showTab(tab);
+  }
+  function resetAll(){
+    if (!confirm('Reset the whole checklist?')) return;
+    state = {};
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    render();
+  }
+  function render(){
+    tabsEl.innerHTML = '';
+    appEl.innerHTML = '';
+    const tabs = Object.keys(checklist);
+    let active = tabs[0];
+    try { active = localStorage.getItem(STORAGE_KEY + '_activeTab') || tabs[0]; } catch(e) {}
+    if (!checklist[active]) active = tabs[0];
+
+    tabs.forEach(tab => {
+      const btn = document.createElement('button');
+      btn.className = 'tab';
+      btn.type = 'button';
+      btn.textContent = tab;
+      btn.dataset.tab = tab;
+      btn.addEventListener('click', () => showTab(tab));
+      tabsEl.appendChild(btn);
+
+      const panel = document.createElement('section');
+      panel.className = 'panel';
+      panel.dataset.tab = tab;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check all in this tab';
+      checkBtn.addEventListener('click', () => setTab(tab, true));
+      const uncheckBtn = document.createElement('button');
+      uncheckBtn.className = 'btn';
+      uncheckBtn.type = 'button';
+      uncheckBtn.textContent = 'Uncheck tab';
+      uncheckBtn.addEventListener('click', () => setTab(tab, false));
+      const printBtn = document.createElement('button');
+      printBtn.className = 'btn';
+      printBtn.type = 'button';
+      printBtn.textContent = 'Print';
+      printBtn.addEventListener('click', () => window.print());
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'btn danger';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset all';
+      resetBtn.addEventListener('click', resetAll);
+      actions.append(checkBtn, uncheckBtn, printBtn, resetBtn);
+      panel.appendChild(actions);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      checklist[tab].forEach(group => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        const h2 = document.createElement('h2');
+        h2.textContent = group.title;
+        const hint = document.createElement('p');
+        hint.className = 'hint';
+        hint.textContent = group.hint;
+        card.append(h2, hint);
+        group.items.forEach(item => {
+          const k = key(tab, group.title, item);
+          const label = document.createElement('label');
+          label.className = 'row' + (state[k] ? ' done' : '');
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = !!state[k];
+          const span = document.createElement('span');
+          span.textContent = item;
+          cb.addEventListener('change', () => { state[k] = cb.checked; label.classList.toggle('done', cb.checked); save(); });
+          label.append(cb, span);
+          card.appendChild(label);
+        });
+        grid.appendChild(card);
+      });
+      panel.appendChild(grid);
+      appEl.appendChild(panel);
+    });
+    showTab(active);
+    updateProgress();
+  }
+  render();
+})();
+</script>
+</body>
+</html>
