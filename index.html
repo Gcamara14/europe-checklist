@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gio's Europe Packing Checklist</title>
 <style>
-:root{--bg:#f7f1e8;--card:#fffaf2;--ink:#17202a;--muted:#667085;--line:#e7dccb;--green:#256f5b;--gold:#c89b3c;--blue:#1f3a5f;--done:#e8f5ee}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:1100px;margin:0 auto;padding:0 14px}header{position:sticky;top:0;z-index:10;background:rgba(247,241,232,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 0 12px}h1{font-size:25px;margin:0 0 6px}.subtitle{margin:0 0 12px;color:var(--muted);font-size:14px}.meter{height:16px;background:#eadfce;border-radius:999px;overflow:hidden;border:1px solid var(--line)}#bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .2s}.stats{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;margin-top:7px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 12px;font-weight:700;white-space:nowrap;cursor:pointer;color:#334155}.tab.active{background:var(--green);border-color:var(--green);color:#fff}main{padding:12px 0 40px}.panel{display:none}.panel.active{display:block}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}.btn{border:1px solid var(--line);background:white;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer}.danger{color:#be123c}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.05)}h2{font-size:18px;margin:0 0 8px}.hint{font-size:13px;color:var(--muted);margin:0 0 10px;line-height:1.35}.row{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:11px;cursor:pointer;line-height:1.25}.row:hover{background:#f3eadb}.row.done{background:var(--done);color:#5d6f62;text-decoration:line-through}input[type=checkbox]{width:20px;height:20px;accent-color:var(--green);flex:none}.badge{display:inline-block;font-size:12px;color:#475569;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:2px 4px 0 0}.mini{font-size:12px;color:var(--muted);margin-left:30px;margin-top:-5px;margin-bottom:4px}.outfit{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0}@media print{header,.tabs,.actions{display:none}.panel{display:block}.card{break-inside:avoid;box-shadow:none}body{background:white}}
+:root{--bg:#f7f1e8;--card:#fffaf2;--ink:#17202a;--muted:#667085;--line:#e7dccb;--green:#256f5b;--gold:#c89b3c;--blue:#1f3a5f;--done:#e8f5ee}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:1100px;margin:0 auto;padding:0 14px}header{position:sticky;top:0;z-index:10;background:rgba(247,241,232,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 0 12px}h1{font-size:25px;margin:0 0 6px}.subtitle{margin:0 0 12px;color:var(--muted);font-size:14px}.meter{height:16px;background:#eadfce;border-radius:999px;overflow:hidden;border:1px solid var(--line)}#bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .2s}.stats{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;margin-top:7px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 12px;font-weight:700;white-space:nowrap;cursor:pointer;color:#334155}.tab.active{background:var(--green);border-color:var(--green);color:#fff}main{padding:12px 0 40px}.panel{display:none}.panel.active{display:block}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}.btn{border:1px solid var(--line);background:white;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer}.danger{color:#be123c}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.05)}.card-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px}h2{font-size:18px;margin:0}.section-count{flex:none;background:var(--green);color:#fff;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}.hint{font-size:13px;color:var(--muted);margin:0 0 10px;line-height:1.35}.row{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:11px;cursor:pointer;line-height:1.25}.row:hover{background:#f3eadb}.row.done{background:var(--done);color:#5d6f62;text-decoration:line-through}input[type=checkbox]{width:20px;height:20px;accent-color:var(--green);flex:none}.badge{display:inline-block;font-size:12px;color:#475569;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:2px 4px 0 0}.mini{font-size:12px;color:var(--muted);margin-left:30px;margin-top:-5px;margin-bottom:4px}.outfit{border-left:4px solid var(--gold);padding-left:10px;margin:8px 0}@media print{header,.tabs,.actions{display:none}.panel{display:block}.card{break-inside:avoid;box-shadow:none}body{background:white}}
 </style>
 </head>
 <body>
@@ -142,12 +142,23 @@
       checklist[tab].forEach(group => {
         const card = document.createElement('article');
         card.className = 'card';
+        const heading = document.createElement('div');
+        heading.className = 'card-heading';
         const h2 = document.createElement('h2');
         h2.textContent = group.title;
+        const count = document.createElement('span');
+        count.className = 'section-count';
+        const updateSectionCount = () => {
+          const done = group.items.filter(item => !!state[key(tab, group.title, item)]).length;
+          count.textContent = done + ' / ' + group.items.length;
+          count.setAttribute('aria-label', done + ' of ' + group.items.length + ' checked');
+        };
+        updateSectionCount();
+        heading.append(h2, count);
         const hint = document.createElement('p');
         hint.className = 'hint';
         hint.textContent = group.hint;
-        card.append(h2, hint);
+        card.append(heading, hint);
         group.items.forEach(item => {
           const k = key(tab, group.title, item);
           const label = document.createElement('label');
@@ -157,7 +168,12 @@
           cb.checked = !!state[k];
           const span = document.createElement('span');
           span.textContent = item;
-          cb.addEventListener('change', () => { state[k] = cb.checked; label.classList.toggle('done', cb.checked); save(); });
+          cb.addEventListener('change', () => {
+            state[k] = cb.checked;
+            label.classList.toggle('done', cb.checked);
+            updateSectionCount();
+            save();
+          });
           label.append(cb, span);
           card.appendChild(label);
         });
