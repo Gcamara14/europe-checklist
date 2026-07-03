@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interactive Fourth of July Sacramento packing checklist.">
+<title>Fourth of July Sacramento Packing List</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#17202a;--muted:#667085;--line:#dbe4ef;--blue:#164e87;--red:#b42336;--gold:#dda928;--done:#eaf5ef}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:1100px;margin:0 auto;padding:0 14px}header{position:sticky;top:0;z-index:10;background:rgba(244,247,251,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:14px 0 12px}.home-link{display:inline-block;color:var(--blue);font-size:14px;font-weight:800;text-decoration:none;margin-bottom:8px}.home-link:hover{text-decoration:underline}h1{font-size:clamp(23px,5vw,30px);margin:0 0 6px}.subtitle{margin:0 0 12px;color:var(--muted);font-size:14px}.meter{height:16px;background:#dfe7f1;border-radius:999px;overflow:hidden;border:1px solid var(--line)}#bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--red),var(--gold));transition:width .2s}.stats{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;margin-top:7px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 12px;font-weight:800;white-space:nowrap;cursor:pointer;color:#334155}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}main{padding:12px 0 40px}.panel{display:none}.panel.active{display:block}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-weight:800;cursor:pointer}.danger{color:var(--red)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.05)}.card-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}h2{font-size:18px;margin:0}.section-count{flex:none;background:var(--blue);color:#fff;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900;font-variant-numeric:tabular-nums}.hint{font-size:13px;color:var(--muted);margin:0 0 10px;line-height:1.4}.row{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:11px;cursor:pointer;line-height:1.3}.row:hover{background:#f0f4f9}.row.done{background:var(--done);color:#5d6f62;text-decoration:line-through}input[type=checkbox]{width:20px;height:20px;accent-color:var(--blue);flex:none}.takeaway{background:#fff8df;border:1px solid #ecd78e;border-radius:16px;padding:15px 17px;margin-top:14px;line-height:1.5}.takeaway strong{color:#6d5310}@media print{header,.tabs,.actions,.home-link{display:none}.panel{display:block}.card{break-inside:avoid;box-shadow:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="home-link" href="all-checklists.html">← All Checklists</a>
+    <h1>🇺🇸 Fourth of July Sacramento Packing List</h1>
+    <p class="subtitle">A day-by-day list for a light two-night trip. Progress is saved on this device.</p>
+    <div class="meter" aria-hidden="true"><div id="bar"></div></div>
+    <div class="stats"><span id="packedCount">0 of 0 checked</span><span id="packedPercent">0% complete</span></div>
+    <nav class="tabs" id="tabs" aria-label="Packing sections"></nav>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+<script>
+(function(){
+  'use strict';
+  const STORAGE_KEY = 'gio_sacramento_july_fourth_checklist_v1';
+  const checklist = {
+    'Friday': [
+      {title:'👕 Wear Today — Clothing', hint:'Wear these today; no need to pack them.', items:['T-shirt or polo','Shorts or lightweight pants','Underwear','Socks','Sneakers']},
+      {title:'🎒 Bring With You', hint:'Keep these close while traveling.', items:['Wallet','Phone','Keys','AirPods','Water bottle']}
+    ],
+    'Saturday River': [
+      {title:'🌊 River Clothing', hint:'What to wear Saturday morning.', items:['Swim trunks','Swim shirt or lightweight T-shirt (optional)','Water shoes','Hat']},
+      {title:'🏖️ River Bag', hint:'Sun, water, power, and snack essentials.', items:['Sunglasses','Sunscreen','Chapstick with SPF','Beach towel','Water bottle','Waterproof phone pouch (if you have one)','Portable charger','Charging cable','Bug spray','Snacks (optional)']},
+      {title:'🚿 After the River', hint:'A clean change for afterward.', items:['Fresh T-shirt','Clean shorts','Fresh underwear','Fresh socks']}
+    ],
+    'Saturday Night': [
+      {title:'🌃 Night Out', hint:'Pick the version of each item that suits the plan.', items:['Nice button-up, polo, or stylish T-shirt','Nice shorts or lightweight pants/jeans','Clean sneakers or loafers','Watch (optional)','Cologne (optional)']},
+      {title:'😴 Sleep', hint:'Comfortable clothes for Saturday night.', items:['Sleep shirt','Sleep shorts','Underwear (if you wear it to sleep)']}
+    ],
+    'Sunday': [
+      {title:'🚗 Travel Home', hint:'Clothes for the ride home.', items:['T-shirt','Shorts','Underwear','Socks','Sneakers']}
+    ],
+    'Essentials': [
+      {title:'🪥 Toiletries', hint:'Travel sizes work nicely for a two-night trip.', items:['Toothbrush','Toothpaste','Deodorant','Body wash','Shampoo/Conditioner','Face wash','Moisturizer','Hair product','Razor (optional)','Medications','Bandages (optional)']},
+      {title:'🔌 Electronics', hint:'Charge everything before leaving.', items:['Phone','Portable charger','Phone charger','Apple Watch charger (if bringing it)','AirPods']},
+      {title:'🪪 Miscellaneous', hint:'Travel details and payment basics.', items:['ID','Credit card','Cash (optional)','Airbnb information','Car charger (optional)']}
+    ],
+    'Pack Summary': [
+      {title:'🎒 You’ll Pack', hint:'The condensed bag check before you zip up.', items:['1 swim trunks','1 river T-shirt (optional)','1 fresh T-shirt for after the river','1 Saturday night shirt','1 Sunday shirt','2 pairs of shorts (river/after river + Sunday, depending on Saturday night)','2–3 underwear','2 pairs of socks','Sleep clothes','Water shoes','Toiletries','Chargers','River essentials']}
+    ]
+  };
+
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch(e) { state = {}; }
+
+  const tabsEl = document.getElementById('tabs');
+  const appEl = document.getElementById('app');
+  const barEl = document.getElementById('bar');
+  const countEl = document.getElementById('packedCount');
+  const pctEl = document.getElementById('packedPercent');
+
+  function key(tab, group, item){ return encodeURIComponent(tab + '|' + group + '|' + item); }
+  function allKeys(tabFilter){
+    const keys = [];
+    Object.keys(checklist).forEach(tab => {
+      if (tabFilter && tab !== tabFilter) return;
+      checklist[tab].forEach(group => group.items.forEach(item => keys.push(key(tab, group.title, item))));
+    });
+    return keys;
+  }
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+    updateProgress();
+  }
+  function updateProgress(){
+    const keys = allKeys();
+    const done = keys.filter(k => !!state[k]).length;
+    const pct = keys.length ? Math.round((done / keys.length) * 100) : 0;
+    barEl.style.width = pct + '%';
+    countEl.textContent = done + ' of ' + keys.length + ' checked';
+    pctEl.textContent = pct + '% complete';
+  }
+  function showTab(tab){
+    document.querySelectorAll('.tab').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+    document.querySelectorAll('.panel').forEach(panel => panel.classList.toggle('active', panel.dataset.tab === tab));
+    try { localStorage.setItem(STORAGE_KEY + '_activeTab', tab); } catch(e) {}
+  }
+  function setTab(tab, value){
+    allKeys(tab).forEach(k => state[k] = value);
+    save();
+    render();
+    showTab(tab);
+  }
+  function resetAll(){
+    if (!confirm('Reset the whole Sacramento checklist?')) return;
+    state = {};
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    render();
+  }
+  function render(){
+    tabsEl.innerHTML = '';
+    appEl.innerHTML = '';
+    const tabs = Object.keys(checklist);
+    let active = tabs[0];
+    try { active = localStorage.getItem(STORAGE_KEY + '_activeTab') || tabs[0]; } catch(e) {}
+    if (!checklist[active]) active = tabs[0];
+
+    tabs.forEach(tab => {
+      const btn = document.createElement('button');
+      btn.className = 'tab';
+      btn.type = 'button';
+      btn.textContent = tab;
+      btn.dataset.tab = tab;
+      btn.addEventListener('click', () => showTab(tab));
+      tabsEl.appendChild(btn);
+
+      const panel = document.createElement('section');
+      panel.className = 'panel';
+      panel.dataset.tab = tab;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check all in this tab';
+      checkBtn.addEventListener('click', () => setTab(tab, true));
+      const uncheckBtn = document.createElement('button');
+      uncheckBtn.className = 'btn';
+      uncheckBtn.type = 'button';
+      uncheckBtn.textContent = 'Uncheck tab';
+      uncheckBtn.addEventListener('click', () => setTab(tab, false));
+      const printBtn = document.createElement('button');
+      printBtn.className = 'btn';
+      printBtn.type = 'button';
+      printBtn.textContent = 'Print';
+      printBtn.addEventListener('click', () => window.print());
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'btn danger';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset all';
+      resetBtn.addEventListener('click', resetAll);
+      actions.append(checkBtn, uncheckBtn, printBtn, resetBtn);
+      panel.appendChild(actions);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      checklist[tab].forEach(group => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        const heading = document.createElement('div');
+        heading.className = 'card-heading';
+        const h2 = document.createElement('h2');
+        h2.textContent = group.title;
+        const count = document.createElement('span');
+        count.className = 'section-count';
+        const updateSectionCount = () => {
+          const done = group.items.filter(item => !!state[key(tab, group.title, item)]).length;
+          count.textContent = done + ' / ' + group.items.length;
+          count.setAttribute('aria-label', done + ' of ' + group.items.length + ' checked');
+        };
+        updateSectionCount();
+        heading.append(h2, count);
+        const hint = document.createElement('p');
+        hint.className = 'hint';
+        hint.textContent = group.hint;
+        card.append(heading, hint);
+
+        group.items.forEach(item => {
+          const k = key(tab, group.title, item);
+          const label = document.createElement('label');
+          label.className = 'row' + (state[k] ? ' done' : '');
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = !!state[k];
+          const span = document.createElement('span');
+          span.textContent = item;
+          cb.addEventListener('change', () => {
+            state[k] = cb.checked;
+            label.classList.toggle('done', cb.checked);
+            updateSectionCount();
+            save();
+          });
+          label.append(cb, span);
+          card.appendChild(label);
+        });
+        grid.appendChild(card);
+      });
+      panel.appendChild(grid);
+      if (tab === 'Pack Summary') {
+        const takeaway = document.createElement('p');
+        takeaway.className = 'takeaway';
+        takeaway.innerHTML = '<strong>Takeaway:</strong> For a two-night trip, this is a light pack—everything should fit comfortably in a backpack or small duffel while leaving room for towels, drinks, or snacks.';
+        panel.appendChild(takeaway);
+      }
+      appEl.appendChild(panel);
+    });
+    showTab(active);
+    updateProgress();
+  }
+  render();
+})();
+</script>
+</body>
+</html>
